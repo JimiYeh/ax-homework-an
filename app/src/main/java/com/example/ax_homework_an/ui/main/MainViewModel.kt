@@ -31,6 +31,7 @@ class MainViewModel : ViewModel() {
         get() = _lotterySharedFlow
 
     @OptIn(ExperimentalCoroutinesApi::class)
+    // 目前是在第二頁銷毀前都會產生新的 x,y  也可以改成第二頁 onPause 後就停止
     fun enableLotteryTimer(enabled: Boolean) {
         job?.cancel()
         if (enabled) {

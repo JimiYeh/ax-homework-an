@@ -25,6 +25,7 @@ class DisplayFragment : Fragment(R.layout.fragment_display) {
     private val binding: FragmentDisplayBinding by viewBinding(FragmentDisplayBinding::bind)
     private val viewModel: MainViewModel by activityViewModel()
     private val colorList: MutableList<Int> = mutableListOf()
+    // 記錄目前選中的 row 及 column
     private var currentLottery = Lottery(Lottery.UNDEFINED, Lottery.UNDEFINED)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,6 +34,7 @@ class DisplayFragment : Fragment(R.layout.fragment_display) {
         initLottery()
 
         viewLifecycleOwner.lifecycleScope.launch {
+            // 只在 resume 生命週期 才更新畫面
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.lotterySharedFlow
                     .collect { lottery ->
@@ -54,6 +56,9 @@ class DisplayFragment : Fragment(R.layout.fragment_display) {
         viewModel.enableLotteryTimer(false)
     }
 
+    /**
+     *  根據上一頁設定的 row column 生成畫面
+     */
     private fun initLottery() {
         initColorList()
 
@@ -67,6 +72,7 @@ class DisplayFragment : Fragment(R.layout.fragment_display) {
                     ).apply {
                         setMargins(getMarginPxInt(1), 0, getMarginPxInt(1), 0)
                         weight = 1f
+                        // 設定點擊確定時 清除此 column 選中狀態
                         setClickListener(object: SingleColumnView.OnClearButtonClickListener {
                             override fun onClearButtonClick() {
                                 clearLottery(column)
@@ -93,6 +99,9 @@ class DisplayFragment : Fragment(R.layout.fragment_display) {
         }
     }
 
+    /**
+     * 隨機產生色碼
+     */
     private fun initColorList() {
         val random = Random()
         for (i in 0 until viewModel.rowCount)
@@ -101,6 +110,9 @@ class DisplayFragment : Fragment(R.layout.fragment_display) {
             )
     }
 
+    /**
+     *  @param column 清除指定的 column 選中狀態
+     */
     private fun clearLottery(column: Int = currentLottery.column) {
         if (column in 0 until viewModel.columnCount) {
             (binding.container.getChildAt(column) as? SingleColumnView)?.run {

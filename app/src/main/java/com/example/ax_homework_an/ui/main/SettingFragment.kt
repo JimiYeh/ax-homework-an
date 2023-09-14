@@ -78,6 +78,9 @@ class SettingFragment : Fragment(R.layout.fragmnet_setting) {
         }
     }
 
+    /**
+     * 檢查輸入範圍
+     */
     private fun checkInput() {
         fun String.inRange(): Boolean {
             return Pattern.compile("(^\\d\$)|10").matcher(this).find()

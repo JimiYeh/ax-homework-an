@@ -18,7 +18,9 @@ class SingleColumnView @JvmOverloads constructor(
     }
 
     private val binding: ViewSingleColumnBinding
+    // 是否顯示外框
     private var isHighlight = false
+    // 需要顯示 random 的格子  null 表示沒有
     private var highlightChildIndex: Int? = null
     private var clickListener: OnClearButtonClickListener? = null
 
@@ -26,14 +28,13 @@ class SingleColumnView @JvmOverloads constructor(
         binding = ViewSingleColumnBinding.inflate(LayoutInflater.from(context), this)
         binding.clearButton.setOnClickListener {
             clickListener?.onClearButtonClick()
-//            binding.border.isVisible = false
-//            binding.clearButton.isEnabled = false
-//            highlightChildIndex?.let {
-//                setLotteryItem(it, false)
-//            }
         }
     }
 
+    /**
+     *  @param isHighlight 是否被選中 (顯示外框)
+     *  @param childIndex 要顯示 random 的格子 null 表示沒有
+     */
     fun setLottery(isHighlight: Boolean, childIndex: Int? = null) {
         this.isHighlight = isHighlight
         binding.clearButton.isEnabled = isHighlight
