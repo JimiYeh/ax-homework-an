@@ -5,4 +5,7 @@
     <color name="colorPrimary">#4090d1</color>
     <color name="colorPrimaryVariant">#4090d1</color>
     <color name="colorTransparent">#00000000</color>
+    <color name="color_303030">#303030</color>
+    <color name="color_515151">#515151</color>
+    <color name="color_63CFD3">#63CFD3</color>
 </resources>

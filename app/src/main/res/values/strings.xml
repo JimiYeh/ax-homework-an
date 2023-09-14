@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">ax-homework-an</string>
-    <string name="range_hint">請輸入 1~20 的整數</string>
+    <string name="range_hint">考慮到第二頁 Random 字樣顯示，請輸入 1~10 的整數</string>
     <string name="row_count">row 數量</string>
     <string name="column_count">column 數量</string>
     <string name="confirm">確認</string>
     <string name="range_error">輸入錯誤</string>
+    <string name="random">random</string>
+    <string name="setting_error">設置錯誤!</string>
 </resources>

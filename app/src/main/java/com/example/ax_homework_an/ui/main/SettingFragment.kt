@@ -1,11 +1,15 @@
 package com.example.ax_homework_an.ui.main
 
+import android.content.Context
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.Spanned
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import com.example.ax_homework_an.R
 import com.example.ax_homework_an.databinding.FragmnetSettingBinding
 import com.example.ax_homework_an.ui.viewBinding
@@ -52,14 +56,31 @@ class SettingFragment : Fragment(R.layout.fragmnet_setting) {
             }
 
             confirmButton.setOnClickListener {
+                try {
+                    requireActivity().currentFocus?.let {
+                        (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                            .hideSoftInputFromWindow(it.windowToken, 0)
+                    }
 
+                    viewModel.rowCount = binding.rowEditText.text.toString().toInt()
+                    viewModel.columnCount = binding.columnEditText.text.toString().toInt()
+                    parentFragmentManager.commit {
+                        add(R.id.container, DisplayFragment(), DisplayFragment::class.simpleName)
+                        hide(this@SettingFragment)
+                        setReorderingAllowed(true)
+                        addToBackStack(null)
+                    }
+
+                } catch (e: NumberFormatException) {
+                    Toast.makeText(this@SettingFragment.requireContext(), getString(R.string.setting_error), Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
     private fun checkInput() {
         fun String.inRange(): Boolean {
-            return Pattern.compile("(^1\\d\$)|(^\\d\$)|20").matcher(this).find()
+            return Pattern.compile("(^\\d\$)|10").matcher(this).find()
         }
 
         var rowCountInRange = false
